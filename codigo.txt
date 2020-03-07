@@ -1,0 +1,4 @@
+add r2, r2, 4
+sub r4, r2, r3
+add r1, r3, 2
+lw r4, 4(r5)

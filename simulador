@@ -1,0 +1,124 @@
+Simulador procesador segmentado:
+
+	5 etapas (if, id, ex, mem, wb)
+	
+	riesgos de datos: aritmeticos, carga-aritmeticos, aritmetico-almacenamiento -----> se resuelven por atajos
+
+	Juego Instrucciones (en el enunciado)
+
+Salida:
+	cliclo 1
+		IF(i1) RS.IF/ID
+	ciclo 2
+		ID(i1) RS.ID/EX
+		IF(i2) RS.IF/ID
+	........
+	........
+	........
+
+
+
+	Ciclos totales: 0912374908927359081374
+	Resultado final
+		BR(BancoRegistros):
+			r0=
+			r1=
+			.
+			.
+			.
+
+Entrada del simulador:
+
+	Instrucciones por teclado:
+		I(cod) 		= add
+		I(ra)  		= r1
+		I(rb)  		= r2
+		I(rc)		= r2 (registro destino)
+		I(inmediato) 	= 0
+
+MD---->	Memoria datos 		----> vector int
+MI---->	Memoria instrucciones 	----> vector de instrucciones (struct instrucciones)
+BR---->	Banco registros		----> vector int
+
+Struct instruccion:
+	-operacion: 	add->0
+			sub->1
+			addi->2
+			subi->3
+			mult->4
+			lw->5
+			sw->6
+			nop->7
+	-ra
+	-rb
+	-rc (registro destino)
+	-inmediato
+
+
+Simulación:
+	REGISTROS:
+
+	RS_IF_ID
+	RS_ID_EX
+	RS_EX_MEM
+	RS_MEM_WB
+	
+	PROCESO DE SIMULACIÓN: (Necesitamos un contador de programa, que será el indice del vector de instrucciones)
+
+	IF->	-lectura instrucción en mem inst (lee del vector de instrucciones)
+		-almacenamiento en RS_IF_ID
+		-Incremento PC
+
+	ID->	-Fuente: RS_IF_ID
+		-Decodificacion y lectura de operando
+		-almacenamiento en RS_ID_EX, se pasa la informacion del registro anterior más lo nuevo
+
+	EX->	-Fuente: RS_ID_EX
+		-realiza la operacón
+		-almacenamiento en RS_EX_MEM, se pasa la informacion del registro anterior más lo nuevo
+
+	MEM->	-Fuente: RS_EX_MEM
+		-solo la utilizan lw y sw
+		-almacenamiento en RS_MEM_WB, se pasa la informacion del registro anterior más lo nuevo (si no es lw o sw, simplemente se pasa lo anterior pq no hay nada nuevo)
+	
+	WB->	-Fuente: RS_MEM_WB
+		-escribe en el registro correspondiente, en el banco de registros 
+
+	REGISTRO DE SEGMENTACIÓN
+	Será un struct registro_segmentacion{
+		cod
+		ra
+		rb
+		rc
+		mem
+		opra
+		oprb
+		resultado
+	}
+
+	while(ajsdhfjah){
+		PODEMOS HACER ESTO AL REVES PARA NO TENER QUE HACER UNA COPIA DE LOS REGISTROS
+		etapa IF
+		mostrar RS_IF_ID y instruccion a la que corresponde
+		etapa ID
+		mostrar RS_ID_EX y instruccion a la que corresponde
+		.
+		.
+		etapa EX
+		mostrar RS_EX_MEM y instruccion a la que corresponde
+		etapa MEM
+		mostrar RS_MEM_WB y instruccion a la que corresponde
+		etapa WB
+		Mostrar resultados
+	}
+
+RIESGOS DATO:
+	-Aritmeticos (se resuelven por adelantamiento)
+		ad r1, r2, r3
+	
+
+	
+
+
+
+
